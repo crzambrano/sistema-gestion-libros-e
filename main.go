@@ -22,6 +22,8 @@ func main() {
 	http.HandleFunc("/books", listBooksHandler)
 	http.HandleFunc("/books/add", addBookHandler)
 	http.HandleFunc("/books/get", getBookHandler)
+	http.HandleFunc("/books/add-concurrent", addBookConcurrentHandler)
+
 
 
 	// Iniciar servidor
