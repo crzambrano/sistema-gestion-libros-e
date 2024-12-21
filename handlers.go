@@ -57,3 +57,28 @@ func getBookHandler(w http.ResponseWriter, r *http.Request) {
 	err := &BookNotFoundError{BookID: id}
 	http.Error(w, err.Error(), http.StatusNotFound)
 }
+
+import "sync"
+
+var mutex sync.Mutex
+
+func addBookConcurrentHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var newBook books.Book
+	err := json.NewDecoder(r.Body).Decode(&newBook)
+	if err != nil {
+		http.Error(w, "Error al decodificar datos", http.StatusBadRequest)
+		return
+	}
+
+	mutex.Lock()
+	library = append(library, newBook)
+	mutex.Unlock()
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(newBook)
+}
