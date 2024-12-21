@@ -21,6 +21,8 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/books", listBooksHandler)
 	http.HandleFunc("/books/add", addBookHandler)
+	http.HandleFunc("/books/get", getBookHandler)
+
 
 	// Iniciar servidor
 	http.ListenAndServe(":8080", nil)
